@@ -22,7 +22,7 @@ import static io.appium.java_client.remote.MobilePlatform.ANDROID;
 
 public class EmulatorDriver implements WebDriverProvider {
 
-    EmulatorConfig emulatorConfig = ConfigFactory.create(EmulatorConfig.class, System.getProperties());//Todo: probably I need to get properties to read deviceHost
+    EmulatorConfig emulatorConfig = ConfigFactory.create(EmulatorConfig.class, System.getProperties());
 
     @Nonnull
     @Override

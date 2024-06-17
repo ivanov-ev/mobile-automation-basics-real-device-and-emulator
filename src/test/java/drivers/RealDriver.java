@@ -22,14 +22,14 @@ import static io.appium.java_client.remote.MobilePlatform.ANDROID;
 
 public class RealDriver implements WebDriverProvider {
 
-    RealConfig realConfig = ConfigFactory.create(RealConfig.class, System.getProperties());//Todo: probably I need to get properties to read deviceHost
+    RealConfig realConfig = ConfigFactory.create(RealConfig.class, System.getProperties());
 
     @Nonnull
     @Override
     public WebDriver createDriver(@Nonnull Capabilities capabilities) {
         UiAutomator2Options options = new UiAutomator2Options();
 
-        options.setAutomationName("Real Device")//Todo: Not sure, maybe I need to assign the same name in Appium Inspector
+        options.setAutomationName(ANDROID_UIAUTOMATOR2)
                 .setPlatformName(ANDROID)
                 .setPlatformVersion(realConfig.platformVersion())
                 .setDeviceName(realConfig.deviceName())
@@ -40,7 +40,7 @@ public class RealDriver implements WebDriverProvider {
         return new AndroidDriver(getAppiumServerUrl(), options);
     }
 
-    public static URL getAppiumServerUrl() {//Todo: Not sure, maybe I need to assign the same name in Appium Inspector
+    public static URL getAppiumServerUrl() {
         try {
             return new URL("http://localhost:4723/wd/hub");
         } catch (MalformedURLException e) {
