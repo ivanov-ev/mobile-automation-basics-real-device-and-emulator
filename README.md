@@ -19,8 +19,3 @@ gradle clean test -DdeviceHost=emulator
 ```shell
 gradle clean test -DdeviceHost=browserstack
 ```
-
-
-`!` After running the tests, it is necessary to restore the application state as follows:
-open "Settings"  - "Apps" - tap the Wikipedia app - "Storage & Cache" - tap "Clear Storage" and "Clear cache".
-
