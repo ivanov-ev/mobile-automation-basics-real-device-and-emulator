@@ -24,25 +24,24 @@ public class OnboardingTest extends TestBase {
             onboardingPage
                     .checkHeading("The Free Encyclopedia\n…in over 300 languages")
                     .checkAddLanguageButtonPresence()
-                    .checkSkipButtonPresence(true)
+                    .checkSkipButtonPresence()
                     .tapForwardButton();
         });
         step("The 2nd screen: check the text on the screen, check the skip button, and click the continue button:", () -> {
             onboardingPage.checkHeading("New ways to explore")
                     .checkSecondaryTextPresence()
-                    .checkSkipButtonPresence(true)
+                    .checkSkipButtonPresence()
                     .tapForwardButton();
         });
         step("The 3rd screen: check the text on the screen, check the skip button, and click the continue button:", () -> {
             onboardingPage.checkHeading("Reading lists with sync")
                     .checkSecondaryTextPresence()
-                    .checkSkipButtonPresence(true)
+                    .checkSkipButtonPresence()
                     .tapForwardButton();
         });
         step("The 4th screen: check the text on the screen, and click the onboarding completion button:", () -> {
             onboardingPage.checkHeading("Data & Privacy")
                     .checkSecondaryTextPresence()
-                    .checkSkipButtonPresence(false)
                     .tapDoneButton();
             homePage.checkMainPageIsOpen();
         });

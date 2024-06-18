@@ -31,12 +31,8 @@ public class OnboardingPage {
         return this;
     }
 
-    public OnboardingPage checkSkipButtonPresence (Boolean visible) {
-        if (visible) {
-            skipButton.should(exist);
-        } else {
-            skipButton.shouldNot(exist);
-        }
+    public OnboardingPage checkSkipButtonPresence () {
+        skipButton.should(exist);
         return this;
     }
 
