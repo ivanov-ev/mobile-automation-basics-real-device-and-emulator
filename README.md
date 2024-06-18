@@ -2,13 +2,13 @@
 
 The commands to run Android tests for the Wikipedia application:
 
-- on the real Android device:
+- on real Android devices:
 
 ```shell
 gradle clean test -DdeviceHost=real
 ```
 
-- on the `UiAutomator2` emulator:
+- on the Android emulator:
 
 ```shell
 gradle clean test -DdeviceHost=emulator
