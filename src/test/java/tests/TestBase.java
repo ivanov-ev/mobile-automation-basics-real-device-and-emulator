@@ -18,14 +18,9 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
 
-    //public static String deviceHost = "emulator";
-
     @BeforeAll
     @Step("Driver initialization")
     static void beforeAll() {
-
-        //deviceHost = System.setProperty("deviceHost", System.getProperty("deviceHost", "emulator"));
-
 
         switch (System.getProperty("deviceHost", "emulator")) {
             case "emulator": {

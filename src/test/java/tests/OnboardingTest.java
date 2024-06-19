@@ -19,7 +19,7 @@ public class OnboardingTest extends TestBase {
     @Feature("Onboarding")
     @Story("Follow onboarding steps")
     @DisplayName("Follow onboarding steps")
-    void FollowOnboardingStepsTest() {
+    void followOnboardingStepsTest() {
         step("The 1st screen: check the first screen's heading, check the add language button, check the skip button, and click the continue button:", () -> {
             onboardingPage
                     .checkHeading("The Free Encyclopedia\n…in over 300 languages")
