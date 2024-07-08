@@ -1,6 +1,7 @@
 package pages;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
@@ -12,37 +13,43 @@ public class OnboardingPage {
     private final SelenideElement primaryTextView = $(id("org.wikipedia.alpha:id/primaryTextView")),
             secondaryTextView = $(id("org.wikipedia.alpha:id/secondaryTextView")),
             addLanguageButton =   $(id("org.wikipedia.alpha:id/addLanguageButton")),
-            skipButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_skip_button")),
+            skipButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_skip_button")), ////android.widget.Button[@resource-id="org.wikipedia.alpha:id/fragment_onboarding_skip_button"]
             forwardButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_forward_button")),
             doneButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_done_button"));
 
-    public OnboardingPage checkHeading (String headingText) {
+    public OnboardingPage checkHeading(String headingText) {
         primaryTextView.shouldHave(text(headingText));
         return this;
     }
 
-    public OnboardingPage checkSecondaryTextPresence () {
+    public OnboardingPage checkSecondaryTextPresence() {
         secondaryTextView.should(exist);
         return this;
     }
 
-    public OnboardingPage checkAddLanguageButtonPresence () {
+    public OnboardingPage checkAddLanguageButtonPresence() {
         addLanguageButton.should(exist);
         return this;
     }
 
-    public OnboardingPage checkSkipButtonPresence () {
+    public OnboardingPage checkSkipButtonPresence() {
         skipButton.should(exist);
         return this;
     }
 
-    public OnboardingPage tapForwardButton () {
+    public OnboardingPage tapForwardButton() {
         forwardButton.click();
         return this;
     }
 
-    public OnboardingPage tapDoneButton () {
+    public OnboardingPage tapDoneButton() {
         doneButton.click();
+        return this;
+    }
+
+    @Step("Skip onboarding")
+    public OnboardingPage skipOnboarding() {
+        skipButton.click();
         return this;
     }
 }

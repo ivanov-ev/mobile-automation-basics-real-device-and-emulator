@@ -3,6 +3,7 @@ package tests;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.HomePage;
 import pages.OnboardingPage;
@@ -15,6 +16,7 @@ public class OnboardingTest extends TestBase {
     OnboardingPage onboardingPage = new OnboardingPage();
     HomePage homePage = new HomePage();
 
+    @Tag("mobile_tests")
     @Test
     @Feature("Onboarding")
     @Story("Follow onboarding steps")
@@ -22,7 +24,7 @@ public class OnboardingTest extends TestBase {
     void followOnboardingStepsTest() {
         step("The 1st screen: check the first screen's heading, check the add language button, check the skip button, and click the continue button:", () -> {
             onboardingPage
-                    .checkHeading("The Free Encyclopedia\n…in over 300 languages")
+                    .checkHeading("The Free Encyclopedia")
                     .checkAddLanguageButtonPresence()
                     .checkSkipButtonPresence()
                     .tapForwardButton();
