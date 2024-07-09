@@ -1,6 +1,5 @@
 package tests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.appium.SelenideAppium;
@@ -23,7 +22,6 @@ public class TestBase {
     @BeforeAll
     @Step("Driver initialization")
     static void beforeAll() {
-
         switch (System.getProperty("deviceHost", "emulator")) {
             case "emulator": {
                 Configuration.browser = EmulatorDriver.class.getName();
@@ -41,8 +39,6 @@ public class TestBase {
         Configuration.browserSize = null;//this is a Selenide workaround; 'null' means 'testing an app, not a browser page'
         Configuration.timeout = 15000;//30000 is recommended; I shortened it to reduce the time spent on Browserstack
         Configuration.pageLoadStrategy = "normal";
-
-
     }
 
     @BeforeEach
@@ -50,8 +46,6 @@ public class TestBase {
     void beforeEach() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());//Adds logging
         open();//Yet another Selenide workaround. It means 'one should open the app first before testing it'
-
-        //DO I NEED THIS?
         SelenideAppium.launchApp();
     }
 

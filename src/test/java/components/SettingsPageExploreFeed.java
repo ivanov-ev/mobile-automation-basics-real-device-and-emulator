@@ -1,28 +1,18 @@
 package components;
 
-import com.codeborne.selenide.DragAndDropOptions;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.appium.SelenideAppium;
 import com.codeborne.selenide.appium.SelenideAppiumElement;
-import com.codeborne.selenide.appium.commands.AppiumDragAndDropTo;
-import io.appium.java_client.AppiumCommandInfo;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidTouchAction;
-import io.appium.java_client.touch.offset.ElementOption;
 import io.qameta.allure.Step;
 import types.FeedState;
 import types.FeedToggle;
 
-import static com.codeborne.selenide.DragAndDropOptions.to;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.actions;
-import static io.appium.java_client.AppiumBy.id;
+import static com.codeborne.selenide.appium.AppiumScrollOptions.with;
+import static com.codeborne.selenide.appium.ScrollDirection.DOWN;
+import static com.codeborne.selenide.appium.ScrollDirection.UP;
 import static org.openqa.selenium.By.xpath;
-import static types.FeedToggle.FEATURED_ARTICLE;
-
-//Todo: probably this will help to reduce the code size: https://github.com/ivanov-ev/parameterized-tests/blob/master/src/test/java/ru/example/data/Deposits.java
 
 public class SettingsPageExploreFeed {
     private final SelenideElement navigateUp =
@@ -31,75 +21,39 @@ public class SettingsPageExploreFeed {
             $(xpath("//android.widget.ImageView[@content-desc=\"More options\"]")),
         showAll = $(byAttribute("text", "Show all")),
         hideAll = $(byAttribute("text", "Hide all")),
-        restoreDefaultView =
-                $(byAttribute("text", "Restore default view"));
-    private final String toggle = "org.wikipedia.alpha:id/feed_content_type_checkbox",
-            dragHandle = "org.wikipedia.alpha:id/feed_content_type_drag_handle";
-    private final SelenideElement featureArticleItem =
-            $(byAttribute("text", "Featured article")).parent().parent(),
-            featureArticleDragHandle = featureArticleItem.$(id(dragHandle)), //todo fix it and similar drag handlers
-            featureArticleToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+        restoreDefaultView = $(byAttribute("text", "Restore default view"));
+    private final SelenideElement featureArticleToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Featured article\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement topReadItem =
-            $(byAttribute("text", "Top read")).parent().parent(),
-            topReadDragHandle = topReadItem.$(id(toggle)),
-            topReadToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement topReadToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Top read\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement pictureOfTheDayItem =
-            $(byAttribute("text", "Picture of the day")).parent().parent(),
-            pictureOfTheDayDragHandle = pictureOfTheDayItem.$(id(toggle)),
-            pictureOfTheDayToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement pictureOfTheDayToggle = $(xpath("//android.widget.TextView[@resource-id=" +
             "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Picture of the day\"]/../.." +
             "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement becauseYouReadItem =
-            $(byAttribute("text", "Because you read")).parent().parent(),
-            becauseYouReadDragHandle = becauseYouReadItem.$(id(toggle)),
-            becauseYouReadToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement becauseYouReadToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Because you read\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement inTheNewsItem =
-            $(byAttribute("text", "In the news")).parent().parent(),
-            inTheNewsDragHandle = inTheNewsItem.$(id(toggle)),
-            inTheNewsToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement inTheNewsToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"In the news\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement onThisDayItem =
-            $(byAttribute("text", "On this day")).parent().parent(),
-            onThisDayDragHandle = onThisDayItem.$(id(toggle)),
-            onThisDayToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement onThisDayToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"On this day\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement randomizerItem =
-            $(byAttribute("text", "Randomizer")).parent().parent(),
-            randomizerDragHandle = randomizerItem.$(id(toggle)),
-            randomizerToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideElement randomizerToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Randomizer\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    private final SelenideElement todayOnWikipediaItem =
-            $(byAttribute("text", "Today on Wikipedia")).parent().parent(),
-            todayOnWikipediaDragHandle = todayOnWikipediaItem.$(id(toggle)),
-            todayOnWikipediaToggle = $(xpath("//android.widget.TextView[@resource-id=" +
+    private final SelenideAppiumElement randomizerToggleAppium = SelenideAppium
+            .$(xpath("//android.widget.TextView[@resource-id=" +
+            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Randomizer\"]/../.." +
+            "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
+    private final SelenideElement todayOnWikipediaToggle = $(xpath("//android.widget.TextView[@resource-id=" +
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Today on Wikipedia\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-
-
-
-
-
-
-
-
-    public final SelenideAppiumElement fromItem = SelenideAppium.$(xpath("//android.widget.TextView[@resource-id=" +
-            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Featured article\"]/../.." +
+    private final SelenideAppiumElement todayOnWikipediaToggleAppium = SelenideAppium
+            .$(xpath("//android.widget.TextView[@resource-id=" +
+            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Today on Wikipedia\"]/../.." +
             "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-    public final SelenideAppiumElement toItem = SelenideAppium.$(xpath("//android.widget.TextView[@resource-id=" +
-            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Picture of the day\"]/../.." +
-            "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
-
-
-
 
     @Step("Switch the toggle in the feed settings")
     public SettingsPageExploreFeed switchToggle(FeedToggle targetToggle, boolean targetState) {
@@ -136,110 +90,32 @@ public class SettingsPageExploreFeed {
                 break;
             }
             case RANDOMIZER: {
+                //This code is for small screens where some toggles do not fit the screen height. This code was not
+                //added to the above cases to reduce the code size because it is not needed right now.
+                if(!randomizerToggle.exists()) {
+                    randomizerToggleAppium.scroll(with(DOWN, 1));
+                }
+                if(!todayOnWikipediaToggle.exists()) {
+                    randomizerToggleAppium.scroll(with(UP, 1));
+                }
                 currentState = Boolean.parseBoolean(randomizerToggle.getAttribute("checked"));
                 if(currentState != targetState) randomizerToggle.click();
                 break;
             }
             case TODAY_ON_WIKIPEDIA: {
+                //This code is for small screens where some toggles do not fit the screen height. This code was not
+                //added to the above cases to reduce the code size because it is not needed right now.
+                if(!todayOnWikipediaToggle.exists()) {
+                    todayOnWikipediaToggleAppium.scroll(with(DOWN, 1));
+                }
+                if(!todayOnWikipediaToggle.exists()) {
+                    todayOnWikipediaToggleAppium.scroll(with(UP, 1));
+                }
                 currentState = Boolean.parseBoolean(todayOnWikipediaToggle.getAttribute("checked"));
                 if(currentState != targetState) todayOnWikipediaToggle.click();
                 break;
             }
         }
-        return this;
-    }
-
-    @Step("Drag and drop")
-    public SettingsPageExploreFeed dragAndDropFeedItem(FeedToggle toggleToMove, FeedToggle targetToggle) {
-        // https://stackoverflow.com/questions/29298096/how-to-tap-and-hold-long-press-using-appium-for-android
-        //Todo
-        /*
-        Click and hold the item to move
-        Determine whether the target location is below or above
-        If it is below, then drag a bit lower than the center of the target position (in absolute number of pixels) and pull
-        If it is above, then do the opposite
-         */
-
-        //If this does not work, then I should move to one more position above or below.!!!!
-
-        //actions().moveToElement($(sourceElement)).clickAndHold().moveByOffset(offsetX, offsetY).release().perform();
-
-        SelenideElement dragHandle = null;
-        SelenideElement targetPosition = null;
-        switch (toggleToMove) {
-            case FEATURED_ARTICLE: {
-                dragHandle = featureArticleDragHandle;
-                break;
-            }
-            case TOP_READ: {
-                dragHandle = topReadDragHandle;
-                break;
-            }
-            case PICTURE_OF_THE_DAY: {
-                dragHandle = pictureOfTheDayDragHandle;
-                break;
-            }
-            case BECAUSE_YOU_READ: {
-                dragHandle = becauseYouReadDragHandle;
-                break;
-            }
-            case IN_THE_NEWS: {
-                dragHandle = inTheNewsDragHandle;
-                break;
-            }
-            case ON_THIS_DAY: {
-                dragHandle = onThisDayDragHandle;
-                break;
-            }
-            case RANDOMIZER: {
-                dragHandle = randomizerDragHandle;
-                break;
-            }
-            case TODAY_ON_WIKIPEDIA: {
-                dragHandle = todayOnWikipediaDragHandle;
-                break;
-            }
-        }
-        switch (targetToggle) {
-            case FEATURED_ARTICLE: {
-                targetPosition = featureArticleDragHandle;
-                break;
-            }
-            case TOP_READ: {
-                targetPosition = topReadDragHandle;
-                break;
-            }
-            case PICTURE_OF_THE_DAY: {
-                targetPosition = pictureOfTheDayDragHandle;
-                break;
-            }
-            case BECAUSE_YOU_READ: {
-                targetPosition = becauseYouReadDragHandle;
-                break;
-            }
-            case IN_THE_NEWS: {
-                targetPosition = inTheNewsDragHandle;
-                break;
-            }
-            case ON_THIS_DAY: {
-                targetPosition = onThisDayDragHandle;
-                break;
-            }
-            case RANDOMIZER: {
-                targetPosition = randomizerDragHandle;
-                break;
-            }
-            case TODAY_ON_WIKIPEDIA: {
-                targetPosition = todayOnWikipediaDragHandle;
-                break;
-            }
-        }
-       // dragHandle.dragAndDropTo(targetPosition);
-        //dragHandle.dragAndDrop(to(targetPosition));
-        fromItem.dragAndDrop(to(toItem));
-
-
-
         return this;
     }
 

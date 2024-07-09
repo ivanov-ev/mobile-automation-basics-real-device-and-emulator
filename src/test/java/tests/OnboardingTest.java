@@ -10,32 +10,34 @@ import pages.OnboardingPage;
 
 import static io.qameta.allure.Allure.step;
 
-@DisplayName("Android Tests for Wikipedia")
+@Tag("mobile_tests")
+@Feature("Onboarding")
+@DisplayName("Tests for the Wikipedia application's onboarding steps")
 public class OnboardingTest extends TestBase {
-
     OnboardingPage onboardingPage = new OnboardingPage();
     HomePage homePage = new HomePage();
 
-    @Tag("mobile_tests")
     @Test
-    @Feature("Onboarding")
     @Story("Follow onboarding steps")
     @DisplayName("Follow onboarding steps")
     void followOnboardingStepsTest() {
-        step("The 1st screen: check the first screen's heading, check the add language button, check the skip button, and click the continue button:", () -> {
+        step("The 1st screen: check the first screen's heading, check the add language button, " +
+                "check the skip button, and click the continue button:", () -> {
             onboardingPage
                     .checkHeading("The Free Encyclopedia")
                     .checkAddLanguageButtonPresence()
                     .checkSkipButtonPresence()
                     .tapForwardButton();
         });
-        step("The 2nd screen: check the text on the screen, check the skip button, and click the continue button:", () -> {
+        step("The 2nd screen: check the text on the screen, check the skip button, " +
+                "and click the continue button:", () -> {
             onboardingPage.checkHeading("New ways to explore")
                     .checkSecondaryTextPresence()
                     .checkSkipButtonPresence()
                     .tapForwardButton();
         });
-        step("The 3rd screen: check the text on the screen, check the skip button, and click the continue button:", () -> {
+        step("The 3rd screen: check the text on the screen, check the skip button, " +
+                "and click the continue button:", () -> {
             onboardingPage.checkHeading("Reading lists with sync")
                     .checkSecondaryTextPresence()
                     .checkSkipButtonPresence()
