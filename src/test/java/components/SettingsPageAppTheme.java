@@ -81,6 +81,17 @@ public class SettingsPageAppTheme {
         return this;
     }
 
+    @Step("Check the number of active themes")
+    public int checkNumberOfActiveTheme() {
+        int numberOfActiveThemes = 0;
+        if (Boolean.parseBoolean(themeLightButton.getAttribute("enabled"))) numberOfActiveThemes++;
+        if (Boolean.parseBoolean(themeSepiaButton.getAttribute("enabled"))) numberOfActiveThemes++;
+        if (Boolean.parseBoolean(themeDarkButton.getAttribute("enabled"))) numberOfActiveThemes++;
+        if (Boolean.parseBoolean(themeBlackButton.getAttribute("enabled"))) numberOfActiveThemes++;
+        System.out.println(numberOfActiveThemes);
+        return numberOfActiveThemes;
+    }
+
     @Step("Exit 'App theme'")
     public SettingsPageAppTheme exitAppTheme() {
         SelenideAppium.back();

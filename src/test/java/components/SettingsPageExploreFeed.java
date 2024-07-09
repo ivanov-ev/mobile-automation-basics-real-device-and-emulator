@@ -2,6 +2,9 @@ package components;
 
 import com.codeborne.selenide.DragAndDropOptions;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.appium.SelenideAppium;
+import com.codeborne.selenide.appium.SelenideAppiumElement;
+import com.codeborne.selenide.appium.commands.AppiumDragAndDropTo;
 import io.appium.java_client.AppiumCommandInfo;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
@@ -11,6 +14,7 @@ import io.qameta.allure.Step;
 import types.FeedState;
 import types.FeedToggle;
 
+import static com.codeborne.selenide.DragAndDropOptions.to;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.actions;
@@ -80,6 +84,23 @@ public class SettingsPageExploreFeed {
                     "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Today on Wikipedia\"]/../.." +
                     "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
 
+
+
+
+
+
+
+
+    public final SelenideAppiumElement fromItem = SelenideAppium.$(xpath("//android.widget.TextView[@resource-id=" +
+            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Featured article\"]/../.." +
+            "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
+    public final SelenideAppiumElement toItem = SelenideAppium.$(xpath("//android.widget.TextView[@resource-id=" +
+            "\"org.wikipedia.alpha:id/feed_content_type_title\" and @text=\"Picture of the day\"]/../.." +
+            "/android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/feed_content_type_checkbox\"]"));
+
+
+
+
     @Step("Switch the toggle in the feed settings")
     public SettingsPageExploreFeed switchToggle(FeedToggle targetToggle, boolean targetState) {
         boolean currentState;
@@ -129,7 +150,7 @@ public class SettingsPageExploreFeed {
     }
 
     @Step("Drag and drop")
-    public SettingsPageExploreFeed dragAndDrop(FeedToggle toggleToMove, FeedToggle targetToggle) {
+    public SettingsPageExploreFeed dragAndDropFeedItem(FeedToggle toggleToMove, FeedToggle targetToggle) {
         // https://stackoverflow.com/questions/29298096/how-to-tap-and-hold-long-press-using-appium-for-android
         //Todo
         /*
@@ -213,7 +234,12 @@ public class SettingsPageExploreFeed {
                 break;
             }
         }
-        dragHandle.dragAndDropTo(targetPosition);
+       // dragHandle.dragAndDropTo(targetPosition);
+        //dragHandle.dragAndDrop(to(targetPosition));
+        fromItem.dragAndDrop(to(toItem));
+
+
+
         return this;
     }
 

@@ -85,7 +85,55 @@ public class SettingsTest extends TestBase {
                     .checkOnThisDaySectionVisibility(false)
                     .checkRandomizerSectionVisibility(true)
                     .checkTodayOnWikipediaSectionVisibility(false);
-            //.scrollToTop(); //Todo i do not need this command
+        });
+
+        /*
+        step("Disable all sections via the 'Hide All' menu item, and check that the home page is blank:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToExploreFeed();
+            settingsPageExploreFeed.changeFeedStateThroughHamburger(FeedState.HIDE_ALL)
+                    .exitCustomizeFeed();
+            settingsPage.exitSettings();
+            homePage.checkFeatureArticleSectionVisibility(false)
+                    .checkTopReadSectionVisibility(false)
+                    .checkPictureOfTheDaySectionVisibility(false)
+                    //.checkBecauseYouReadSectionVisibility(false) //TODO: FUTURE_FIX because the section is never displayed
+                    .checkInTheNewsSectionVisibility(false)
+                    .checkOnThisDaySectionVisibility(false)
+                    .checkRandomizerSectionVisibility(false)
+                    .checkTodayOnWikipediaSectionVisibility(false)
+                    .tapCustomizeButton();
+        });
+        step("Enable all sections via the 'Show All' menu item, and check that the home page is blank:", () -> {
+            settingsPageExploreFeed.changeFeedStateThroughHamburger(FeedState.SHOW_ALL)
+                    .exitCustomizeFeed();//The app is designed so that it navigates directly to the home page
+            // if the previous navigation is the 'Customize' button click on the home page
+            homePage.checkFeatureArticleSectionVisibility(true)
+                    .checkTopReadSectionVisibility(true)
+                    .checkPictureOfTheDaySectionVisibility(true)
+                    //.checkBecauseYouReadSectionVisibility(true) //TODO: FUTURE_FIX because the section is never displayed
+                    .checkInTheNewsSectionVisibility(true)
+                    .checkOnThisDaySectionVisibility(true)
+                    .checkRandomizerSectionVisibility(true)
+                    .checkTodayOnWikipediaSectionVisibility(true);
+        });
+        */
+
+    }
+
+
+
+
+    @Tag("mobile_tests")
+    @Test
+    @Feature("Settings")
+    @Story("Explore Feed")
+    @DisplayName("'Explore Feed' options: enable or disable feed sections through the hamburger button:")
+    void enableOrDisableFeedSectionsThroughHamburgerTest() {
+        step("Skip onboarding and close the feed customization announcement", () -> {
+            onboardingPage.skipOnboarding();
+            homePage.closeCustomizeFeedAnnouncement();
         });
         step("Disable all sections via the 'Hide All' menu item, and check that the home page is blank:", () -> {
             homePageBottomTab.tapMore()
@@ -117,14 +165,61 @@ public class SettingsTest extends TestBase {
                     .checkRandomizerSectionVisibility(true)
                     .checkTodayOnWikipediaSectionVisibility(true);
         });
+        step("Disable all sections via the 'Hide All' menu item, and check that the home page is blank:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToExploreFeed();
+            settingsPageExploreFeed.changeFeedStateThroughHamburger(FeedState.HIDE_ALL)
+                    .exitCustomizeFeed();
+            settingsPage.exitSettings();
+            homePage.checkFeatureArticleSectionVisibility(false)
+                    .checkTopReadSectionVisibility(false)
+                    .checkPictureOfTheDaySectionVisibility(false)
+                    //.checkBecauseYouReadSectionVisibility(false) //TODO: FUTURE_FIX because the section is never displayed
+                    .checkInTheNewsSectionVisibility(false)
+                    .checkOnThisDaySectionVisibility(false)
+                    .checkRandomizerSectionVisibility(false)
+                    .checkTodayOnWikipediaSectionVisibility(false)
+                    .tapCustomizeButton();
+        });
+        step("Enable all sections via the 'Restore Default View' menu item, and check that the home page is blank:", () -> {
+            settingsPageExploreFeed.changeFeedStateThroughHamburger(FeedState.RESTORE)
+                    .exitCustomizeFeed();//The app is designed so that it navigates directly to the home page
+            // if the previous navigation is the 'Customize' button click on the home page
+            homePage.checkFeatureArticleSectionVisibility(true)
+                    .checkTopReadSectionVisibility(true)
+                    .checkPictureOfTheDaySectionVisibility(true)
+                    //.checkBecauseYouReadSectionVisibility(true) //TODO: FUTURE_FIX because the section is never displayed
+                    .checkInTheNewsSectionVisibility(true)
+                    .checkOnThisDaySectionVisibility(true)
+                    .checkRandomizerSectionVisibility(true)
+                    .checkTodayOnWikipediaSectionVisibility(true);
+        });
     }
-    //Todo maybe I will add the "restore defaults' check to the above test.
 
+
+
+
+
+    //todo delete this test
+    @Tag("mobile_tests")
     @Test
     @Feature("Settings")
     @Story("Explore Feed")
     @DisplayName("'Explore Feed' options: change the order of feed sections")
     void changeOrderOfFeedSectionsTest() {
+        step("Skip onboarding and close the feed customization announcement", () -> {
+            onboardingPage.skipOnboarding();
+            homePage.closeCustomizeFeedAnnouncement();
+        });
+        homePageBottomTab.tapMore()
+                .goToSettings();
+        settingsPage.goToExploreFeed();
+        settingsPageExploreFeed.dragAndDropFeedItem(FEATURED_ARTICLE, PICTURE_OF_THE_DAY)
+                .exitCustomizeFeed();
+        settingsPage.exitSettings();
+
+
 
     }
 
@@ -156,6 +251,8 @@ public class SettingsTest extends TestBase {
         });
     }
 
+
+    //todo delete this test
     @Tag("mobile_tests")
     @Test
     @Feature("Settings")
@@ -198,9 +295,36 @@ public class SettingsTest extends TestBase {
             Attach.screenshotAs("Last screenshot"); //delete this if it does not work
             homePage.checkSelectedThemeColor(theme);
         });
-
     }
 
-    // I can add the match system theme test by operating the "enabled" attribute (2 of 4 are enabled)
-
+    @Tag("mobile_tests")
+    @Test
+    @Feature("Settings")
+    @Story("App Theme")
+    @DisplayName("'App Theme' options: check the 'Match system theme' toggle ")
+    void checkMatchSystemThemeToggleTest() {
+        step("Skip onboarding:", () -> {
+            onboardingPage.skipOnboarding();
+        });
+        step("Go to the 'App theme' settings:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToAppTheme();
+        });
+        step("Check the number of active themes = 2:", () -> {
+            Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
+        step("Turn off the 'Match system theme' toggle:", () -> {
+            settingsPageAppTheme.switchMatchSystemThemeToggle(false);
+        });
+        step("Check the number of active themes = 4:", () -> {
+            Assertions.assertEquals(4, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
+        step("Turn on the 'Match system theme' toggle:", () -> {
+            settingsPageAppTheme.switchMatchSystemThemeToggle(true);
+        });
+        step("Check the number of active themes = 2:", () -> {
+            Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
+    }
 }
