@@ -1,16 +1,31 @@
 package components;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.DragAndDropOptions;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.appium.*;
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.nativekey.AndroidKey;
 import io.qameta.allure.Step;
 import pages.SettingsPage;
 import types.Font;
 import types.Theme;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.webdriver;
 import static io.appium.java_client.AppiumBy.id;
+import static io.appium.java_client.android.nativekey.AndroidKey.BACK;
+import static org.openqa.selenium.By.xpath;
 
 public class SettingsPageAppTheme {
+    private final SelenideElement navigateUp =
+            $(xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"));
+
+    private final SelenideAppiumElement line = SelenideAppium.$(xpath("//android.widget.FrameLayout[@resource-id=\"org.wikipedia.alpha:id/design_bottom_sheet\"]"));
+
     private final SelenideElement fontSansSerifButton =  $(id("org.wikipedia.alpha:id/button_font_family_sans_serif")),
             fontSerifButton =  $(id("org.wikipedia.alpha:id/button_font_family_serif"));
     private final SelenideElement themeLightButton = $(id("org.wikipedia.alpha:id/button_theme_light")),
@@ -66,5 +81,10 @@ public class SettingsPageAppTheme {
         return this;
     }
 
-    //Todo add a method to exit the app theme menu
+    @Step("Exit 'App theme'")
+    public SettingsPageAppTheme exitAppTheme() {
+        SelenideAppium.back();
+        SelenideAppium.back();
+        return this;
+    }
 }

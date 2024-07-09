@@ -4,22 +4,39 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.appium.SelenideAppium;
 import com.codeborne.selenide.appium.SelenideAppiumElement;
 import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import types.FeedToggle;
+import types.Theme;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byAttribute;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static com.codeborne.selenide.appium.ScrollDirection.DOWN;
 import static com.codeborne.selenide.appium.ScrollDirection.UP;
 import static io.appium.java_client.AppiumBy.id;
 import static io.appium.java_client.touch.offset.PointOption.point;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.openqa.selenium.By.xpath;
 
 
 import static com.codeborne.selenide.appium.AppiumScrollOptions.with;
 import static com.codeborne.selenide.appium.AppiumScrollOptions.down;
 import static com.codeborne.selenide.appium.AppiumScrollOptions.up;
+import static types.Theme.SEPIA;
 
 public class HomePage {
     private final SelenideElement searchWikipediaContainer = $(id("org.wikipedia.alpha:id/search_container"));
@@ -226,7 +243,7 @@ public class HomePage {
     }
 
     public void scrollMethod() {
-            SelenideAppium.$(By.xpath(".//*[@text='Random article']")).scroll(with(DOWN, 10));
+            SelenideAppium.$(xpath(".//*[@text='Random article']")).scroll(with(DOWN, 10));
     }
 
     @Step("Close the 'Customize your Explore feed' announcement container " +
@@ -245,5 +262,59 @@ public class HomePage {
     public void checkImages(boolean showImages) {
         if (showImages) featuredArticleImage.should(exist);
         else featuredArticleImage.shouldNot(exist);
+    }
+
+    @Step("Check the selected theme color")
+    public void checkSelectedThemeColor(Theme theme) throws IOException {
+        File file = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
+        BufferedImage bufferedImage = ImageIO.read(file);
+
+        //System.out.println(bufferedImage.getColorModel());
+        int pixelColor = bufferedImage.getRGB(245,75);
+        int red = (pixelColor & 0x00ff0000) >> 16;
+        int green = (pixelColor & 0x0000ff00) >> 8;
+        int blue = pixelColor & 0x000000ff;
+
+        //System.out.println(pixelColor);
+        //System.out.println(red);
+        //System.out.println(green);
+        //System.out.println(blue);
+
+        switch(theme) {
+            case LIGHT: {
+                Assertions.assertEquals(255, red);
+                Assertions.assertEquals(255, green);
+                Assertions.assertEquals(255, blue);
+                break;
+            }
+            case SEPIA: {
+                Assertions.assertEquals(248, red);
+                Assertions.assertEquals(241, green);
+                Assertions.assertEquals(227, blue);
+                break;
+            }
+            case DARK: {
+                //This assertion differs from the others to get around the buggy behavior of the Android emulator
+                //or the UiAutomator2 engine, which resulted in a bit different gray color at every run
+                Integer[] expectedTitles = {31, 32, 33, 34, 35};
+                List<Integer> expectedTitlesList = Arrays.asList(expectedTitles);
+                assertTrue(expectedTitlesList.contains((red)));
+                assertTrue(expectedTitlesList.contains((green)));
+                assertTrue(expectedTitlesList.contains((blue)));
+                break;
+            }
+            case BLACK: {
+                Assertions.assertEquals(0, red);
+                Assertions.assertEquals(0, green);
+                Assertions.assertEquals(0, blue);
+                break;
+            }
+        }
+
+
+
+
+
+
     }
 }

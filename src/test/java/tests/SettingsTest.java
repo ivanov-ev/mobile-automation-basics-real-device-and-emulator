@@ -3,20 +3,36 @@ package tests;
 import components.HomePageBottomTab;
 import components.SettingsPageAppTheme;
 import components.SettingsPageExploreFeed;
+import helpers.Attach;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import pages.HomePage;
 import pages.OnboardingPage;
 import pages.SettingsPage;
 import types.FeedState;
 
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static helpers.Attach.screenshotAs;
 import static io.qameta.allure.Allure.step;
 import static types.FeedToggle.*;
+import static types.Font.SERIF;
+import static types.Theme.*;
 
 import types.FeedToggle;
+import types.Font;
+import types.Theme;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class SettingsTest extends TestBase {
     OnboardingPage onboardingPage = new OnboardingPage();
@@ -140,20 +156,51 @@ public class SettingsTest extends TestBase {
         });
     }
 
+    @Tag("mobile_tests")
     @Test
     @Feature("Settings")
     @Story("App Theme")
     @DisplayName("'App Theme' options: change the font")
     void changeFontTest() {
-
+        step("Skip onboarding:", () -> {
+            onboardingPage.skipOnboarding();
+        });
+        step("Go to the 'App theme' settings:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToAppTheme();
+            settingsPageAppTheme.selectFont(SERIF);
+        });
+        //todo
     }
 
-    @Test
+    @Tag("mobile_tests")
+    @EnumSource(Theme.class)
+    @ParameterizedTest
     @Feature("Settings")
     @Story("App Theme")
     @DisplayName("'App Theme' options: change the theme")
-    void changeThemeTest() {
+    void changeThemeTest(Theme theme) {
+        step("Skip onboarding:", () -> {
+            onboardingPage.skipOnboarding();
+        });
+        step("Go to the 'App theme' settings:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToAppTheme();
+        });
+        step("Allow all 4 themes to be selected:", () -> {
+            settingsPageAppTheme.switchMatchSystemThemeToggle(false);
+        });
+        step("Select the theme and verify:", () -> {
+            settingsPageAppTheme.selectTheme(theme);
+            settingsPageAppTheme.exitAppTheme();
+            Attach.screenshotAs("Last screenshot"); //delete this if it does not work
+            homePage.checkSelectedThemeColor(theme);
+        });
 
     }
+
+    // I can add the match system theme test by operating the "enabled" attribute (2 of 4 are enabled)
 
 }

@@ -24,7 +24,7 @@ public class SettingsPage {
     private final SelenideElement navigateUp =  $(xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"));
     private final SelenideElement exploreFeed = $(byAttribute("text", "Explore Feed")),
 
-    appTheme = $(byText("App theme")).parent(),
+    appTheme = $(byAttribute("text", "App theme")),
     showImages = $(byText("Show images")),
     showImagesToggle = $(xpath("//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"Show images\"]/../..//android.widget.Switch[@resource-id=\"org.wikipedia.alpha:id/switchWidget\"]"));
             //showImages.$(id("org.wikipedia.alpha:id/switchWidget")); // it has the attribute "checked" = false
