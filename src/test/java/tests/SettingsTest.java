@@ -36,7 +36,7 @@ public class SettingsTest extends TestBase {
 
     @Test
     @Story("Explore Feed")
-    @DisplayName("The 'Explore Feed' options: enable or disable feed sections:")
+    @DisplayName("The 'Explore Feed' options: enable or disable feed sections")
     void enableOrDisableFeedSectionsTest() {
         step("Skip onboarding and close the feed customization announcement", () -> {
             onboardingPage.skipOnboarding();
@@ -80,7 +80,7 @@ public class SettingsTest extends TestBase {
 
     @Test
     @Story("Explore Feed")
-    @DisplayName("The 'Explore Feed' options: enable or disable feed sections through the hamburger button:")
+    @DisplayName("The 'Explore Feed' options: enable or disable feed sections through the hamburger button")
     void enableOrDisableFeedSectionsThroughHamburgerTest() {
         step("Skip onboarding and close the feed customization announcement", () -> {
             onboardingPage.skipOnboarding();
@@ -195,7 +195,7 @@ public class SettingsTest extends TestBase {
         step("Select the theme and verify:", () -> {
             settingsPageAppTheme.selectTheme(theme);
             settingsPageAppTheme.exitAppTheme();
-            Attach.screenshotAs("Last screenshot"); //delete this if it does not work
+            Attach.screenshotAs("Selected theme's screenshot");
             homePage.checkSelectedThemeColor(theme);
         });
     }

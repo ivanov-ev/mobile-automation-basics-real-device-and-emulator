@@ -1,7 +1,7 @@
 package components;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.appium.*;
 import io.qameta.allure.Step;
 import types.Theme;
 
@@ -58,8 +58,8 @@ public class SettingsPageAppTheme {
 
     @Step("Exit 'App theme'")
     public SettingsPageAppTheme exitAppTheme() {
-        SelenideAppium.back();
-        SelenideAppium.back();
+        Selenide.back();
+        Selenide.back();
         return this;
     }
 }

@@ -7,13 +7,14 @@ repositories {
     mavenCentral()
 }
 
-def selenideVersion = "6.18.0",
+def selenideVersion = "7.3.1",
+    selenideAppiumVersion = "7.3.1",
     restAssuredVersion = "5.3.0",
     allureVersion = "2.27.0",
     junitVersion = "5.10.0",
     slf4jVersion = "2.0.7",
     aspectjWeaverVersion = "1.9.22",
-    appiumJavaClientVersion = "8.3.0",
+    appiumJavaClientVersion = "9.2.2",
     ownerVersion = "1.0.12",
     commonIoVersion = "2.11.0"
 
@@ -34,7 +35,7 @@ allure {
 dependencies {
     testImplementation(
             "com.codeborne:selenide:$selenideVersion",
-            "com.codeborne:selenide-appium:$selenideVersion",
+            "com.codeborne:selenide-appium:$selenideAppiumVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
             "io.appium:java-client:$appiumJavaClientVersion",
             "io.rest-assured:rest-assured:$restAssuredVersion",
@@ -61,24 +62,5 @@ task mobile_tests(type: Test) {
     useJUnitPlatform {
         includeTags("mobile_tests")
     }
+    systemProperties(System.getProperties())
 }
-
-task develop_tests(type: Test) {
-    useJUnitPlatform {
-        includeTags("develop_tests")
-    }
-}
-
-/*
-task android(type: Test) {
-    useJUnitPlatform {
-        includeTags("android")
-    }
-}
-
-task ios(type: Test) {
-    useJUnitPlatform {
-        includeTags("ios")
-    }
-}
- */

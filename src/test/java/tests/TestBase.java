@@ -2,7 +2,6 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.appium.SelenideAppium;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import drivers.BrowserstackDriver;
 import drivers.EmulatorDriver;
@@ -46,7 +45,6 @@ public class TestBase {
     void beforeEach() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());//Adds logging
         open();//Yet another Selenide workaround. It means 'one should open the app first before testing it'
-        SelenideAppium.launchApp();
     }
 
     @AfterEach

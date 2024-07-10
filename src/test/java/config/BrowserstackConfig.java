@@ -17,6 +17,8 @@ public interface BrowserstackConfig extends Config {
     @Key("os_version")
     String osVersion();
 
+    String os();
+
     String project();
 
     String build();
@@ -25,4 +27,9 @@ public interface BrowserstackConfig extends Config {
 
     @Key("base_url")
     String remote();
+
+    String platform();
+
+    @Key("appium_version")
+    String appiumVersion();
 }
