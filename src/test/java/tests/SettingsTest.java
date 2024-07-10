@@ -187,7 +187,7 @@ public class SettingsTest extends TestBase {
                     .goToSettings();
             settingsPage.goToAppTheme();
         });
-        if (!System.getProperty("deviceHost", "emulator").equals("real")) {
+        if (System.getProperty("deviceHost", "emulator").equals("emulator")) {
             step("Allow all 4 themes to be selected:", () -> {
                 settingsPageAppTheme.switchMatchSystemThemeToggle(false);
             });
@@ -204,7 +204,7 @@ public class SettingsTest extends TestBase {
     @Story("App Theme")
     @DisplayName("The 'App Theme' options: check the 'Match system theme' toggle")
     void checkMatchSystemThemeToggleTest() {
-        if(!System.getProperty("deviceHost", "emulator").equals("real")) {
+        if(System.getProperty("deviceHost", "emulator").equals("emulator")) {
             step("Skip onboarding:", () -> {
                 onboardingPage.skipOnboarding();
             });
@@ -231,7 +231,8 @@ public class SettingsTest extends TestBase {
         }
         else {
             Allure.addAttachment("Comment", "text/plain", "Test skipped!\n" +
-                    "My real Android device does not display the 'Match system theme' toggle", ".txt");
+                    "Neither my Android phone, nor the Browserstack service displays the 'Match system theme' toggle",
+                    ".txt");
         }
     }
 }
