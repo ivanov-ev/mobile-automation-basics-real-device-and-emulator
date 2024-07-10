@@ -115,4 +115,12 @@ There is a task in `Jira` that contains references to Allure test cases and Allu
 
 <img alt="JIRA" src="./images/screenshots/JiraTask.png">
 
+---
+
+<a id="testexecution"></a>
+## Test Execution Example
+
+<img alt="Video" src="./images/screenshots/video-sample.gif">
+
+
 
