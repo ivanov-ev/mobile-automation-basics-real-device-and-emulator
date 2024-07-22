@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import types.FeedToggle;
 import types.Theme;
 
 import static com.codeborne.selenide.appium.AppiumScrollOptions.with;
@@ -111,9 +110,9 @@ public class HomePage {
         return this;
     }
 
-    //TODO: FUTURE_FIX the method is currently not used because the 'Because You Read' section never appears in the app
     @Step("Check the 'Because You Read' section visibility on the home page. " +
-            "'True' = visible, 'false' = invisible. The value passed to the method = '{visible}'")
+            "ATTENTION: this section is never displayed! Always run this method with the input parameter = 'false'. " +
+            "The value passed to the method = '{visible}'")
     public HomePage checkBecauseYouReadSectionVisibility(boolean visible) {
         if (visible) becauseYouReadSectionAppium.scroll(with(DOWN, 10));
         else {

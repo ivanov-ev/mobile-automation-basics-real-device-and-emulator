@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import pages.HomePage;
@@ -46,7 +48,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(true)
                     .checkTopReadSectionVisibility(true)
                     .checkPictureOfTheDaySectionVisibility(true)
-                    //.checkBecauseYouReadSectionVisibility(true) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(true)
                     .checkOnThisDaySectionVisibility(true)
                     .checkRandomizerSectionVisibility(true)
@@ -70,7 +72,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(true)
                     .checkTopReadSectionVisibility(false)
                     .checkPictureOfTheDaySectionVisibility(true)
-                    //.checkBecauseYouReadSectionVisibility(false) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(true)
                     .checkOnThisDaySectionVisibility(false)
                     .checkRandomizerSectionVisibility(true)
@@ -96,7 +98,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(false)
                     .checkTopReadSectionVisibility(false)
                     .checkPictureOfTheDaySectionVisibility(false)
-                    //.checkBecauseYouReadSectionVisibility(false) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(false)
                     .checkOnThisDaySectionVisibility(false)
                     .checkRandomizerSectionVisibility(false)
@@ -110,7 +112,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(true)
                     .checkTopReadSectionVisibility(true)
                     .checkPictureOfTheDaySectionVisibility(true)
-                    //.checkBecauseYouReadSectionVisibility(true) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(true)
                     .checkOnThisDaySectionVisibility(true)
                     .checkRandomizerSectionVisibility(true)
@@ -126,7 +128,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(false)
                     .checkTopReadSectionVisibility(false)
                     .checkPictureOfTheDaySectionVisibility(false)
-                    //.checkBecauseYouReadSectionVisibility(false) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(false)
                     .checkOnThisDaySectionVisibility(false)
                     .checkRandomizerSectionVisibility(false)
@@ -140,7 +142,7 @@ public class SettingsTest extends TestBase {
             homePage.checkFeatureArticleSectionVisibility(true)
                     .checkTopReadSectionVisibility(true)
                     .checkPictureOfTheDaySectionVisibility(true)
-                    //.checkBecauseYouReadSectionVisibility(true) //TODO: FUTURE_FIX the section is never displayed
+                    .checkBecauseYouReadSectionVisibility(false)
                     .checkInTheNewsSectionVisibility(true)
                     .checkOnThisDaySectionVisibility(true)
                     .checkRandomizerSectionVisibility(true)
@@ -178,7 +180,8 @@ public class SettingsTest extends TestBase {
     @ParameterizedTest
     @Story("App Theme")
     @DisplayName("The 'App Theme' options: change the theme")
-    void changeThemeTest(Theme theme) {
+    @EnabledIfSystemProperty(named = "deviceHost", matches = "emulator")
+    void changeThemeOnEmulatorTest(Theme theme) {
         step("Skip onboarding:", () -> {
             onboardingPage.skipOnboarding();
         });
@@ -187,11 +190,31 @@ public class SettingsTest extends TestBase {
                     .goToSettings();
             settingsPage.goToAppTheme();
         });
-        if (System.getProperty("deviceHost", "emulator").equals("emulator")) {
-            step("Allow all 4 themes to be selected:", () -> {
-                settingsPageAppTheme.switchMatchSystemThemeToggle(false);
-            });
-        }
+        step("Allow all 4 themes to be selected:", () -> {//this step is available only on an emulator
+            settingsPageAppTheme.switchMatchSystemThemeToggle(false);
+        });
+        step("Select the theme and verify:", () -> {
+            settingsPageAppTheme.selectTheme(theme);
+            settingsPageAppTheme.exitAppTheme();
+            Attach.screenshotAs("Selected theme's screenshot");
+            homePage.checkSelectedThemeColor(theme);
+        });
+    }
+
+    @EnumSource(Theme.class)
+    @ParameterizedTest
+    @Story("App Theme")
+    @DisplayName("The 'App Theme' options: change the theme")
+    @DisabledIfSystemProperty(named = "deviceHost", matches = "emulator")
+    void changeThemeOnRealDeviceOrBrowserstackTest(Theme theme) {
+        step("Skip onboarding:", () -> {
+            onboardingPage.skipOnboarding();
+        });
+        step("Go to the 'App theme' settings:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToAppTheme();
+        });
         step("Select the theme and verify:", () -> {
             settingsPageAppTheme.selectTheme(theme);
             settingsPageAppTheme.exitAppTheme();
@@ -203,36 +226,30 @@ public class SettingsTest extends TestBase {
     @Test
     @Story("App Theme")
     @DisplayName("The 'App Theme' options: check the 'Match system theme' toggle")
+    @EnabledIfSystemProperty(named = "deviceHost", matches = "emulator")
     void checkMatchSystemThemeToggleTest() {
-        if(System.getProperty("deviceHost", "emulator").equals("emulator")) {
-            step("Skip onboarding:", () -> {
-                onboardingPage.skipOnboarding();
-            });
-            step("Go to the 'App theme' settings:", () -> {
-                homePageBottomTab.tapMore()
-                        .goToSettings();
-                settingsPage.goToAppTheme();
-            });
-            step("Check the number of active themes = 2:", () -> {
-                Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
-            });
-            step("Turn off the 'Match system theme' toggle:", () -> {
-                settingsPageAppTheme.switchMatchSystemThemeToggle(false);
-            });
-            step("Check the number of active themes = 4:", () -> {
-                Assertions.assertEquals(4, settingsPageAppTheme.checkNumberOfActiveTheme());
-            });
-            step("Turn on the 'Match system theme' toggle:", () -> {
-                settingsPageAppTheme.switchMatchSystemThemeToggle(true);
-            });
-            step("Check the number of active themes = 2:", () -> {
-                Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
-            });
-        }
-        else {
-            Allure.addAttachment("Comment", "text/plain", "Test skipped!\n" +
-                    "Neither my Android phone, nor the Browserstack service displays the 'Match system theme' toggle",
-                    ".txt");
-        }
+        step("Skip onboarding:", () -> {
+            onboardingPage.skipOnboarding();
+        });
+        step("Go to the 'App theme' settings:", () -> {
+            homePageBottomTab.tapMore()
+                    .goToSettings();
+            settingsPage.goToAppTheme();
+        });
+        step("Check the number of active themes = 2:", () -> {
+            Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
+        step("Turn off the 'Match system theme' toggle:", () -> {
+            settingsPageAppTheme.switchMatchSystemThemeToggle(false);
+        });
+        step("Check the number of active themes = 4:", () -> {
+            Assertions.assertEquals(4, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
+        step("Turn on the 'Match system theme' toggle:", () -> {
+            settingsPageAppTheme.switchMatchSystemThemeToggle(true);
+        });
+        step("Check the number of active themes = 2:", () -> {
+            Assertions.assertEquals(2, settingsPageAppTheme.checkNumberOfActiveTheme());
+        });
     }
 }
