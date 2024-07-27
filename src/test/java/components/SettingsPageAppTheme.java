@@ -41,7 +41,7 @@ public class SettingsPageAppTheme {
     @Step("Switch the 'Match System Theme' toggle")
     public SettingsPageAppTheme switchMatchSystemThemeToggle(boolean targetState) {
         boolean currentState = Boolean.parseBoolean(matchSystemThemeToggle.getAttribute("checked"));
-        if(currentState != targetState) matchSystemThemeToggle.click();
+        if (currentState != targetState) matchSystemThemeToggle.click();
         return this;
     }
 

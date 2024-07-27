@@ -10,18 +10,19 @@ import org.openqa.selenium.WebDriver;
 
 import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 public class BrowserstackDriver implements WebDriverProvider {
 
-    BrowserstackConfig browserstackConfig = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
+    final BrowserstackConfig browserstackConfig = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
 
     @Nonnull
     @Override
     public WebDriver createDriver(@Nonnull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities();
-        HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+        HashMap<String, Object> browserstackOptions = new HashMap<>();
 
         // Set your access credentials
         browserstackOptions.put("userName", browserstackConfig.browserstackUser());
@@ -54,8 +55,8 @@ public class BrowserstackDriver implements WebDriverProvider {
                     // This init works only with 'AndroidDriver'.
                     // If 'RemoteWebDriver' is specified here instead of 'AndroidDriver', then the driver opens a blank
                     // page in the embedded Chrome browser rather than the Android application.
-                    new URL(browserstackConfig.remote()), caps);
-        } catch (MalformedURLException e) {
+                    new URI(browserstackConfig.remote()).toURL(), caps);
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }

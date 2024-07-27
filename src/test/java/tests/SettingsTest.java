@@ -4,7 +4,6 @@ import components.HomePageBottomTab;
 import components.SettingsPageAppTheme;
 import components.SettingsPageExploreFeed;
 import helpers.Attach;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Assertions;
@@ -29,12 +28,12 @@ import types.Theme;
 @Feature("Settings")
 @DisplayName("Tests for the Wikipedia application settings")
 public class SettingsTest extends TestBase {
-    OnboardingPage onboardingPage = new OnboardingPage();
-    SettingsPage settingsPage = new SettingsPage();
-    SettingsPageAppTheme settingsPageAppTheme = new SettingsPageAppTheme();
-    SettingsPageExploreFeed settingsPageExploreFeed = new SettingsPageExploreFeed();
-    HomePage homePage = new HomePage();
-    HomePageBottomTab homePageBottomTab = new HomePageBottomTab();
+    final OnboardingPage onboardingPage = new OnboardingPage();
+    final SettingsPage settingsPage = new SettingsPage();
+    final SettingsPageAppTheme settingsPageAppTheme = new SettingsPageAppTheme();
+    final SettingsPageExploreFeed settingsPageExploreFeed = new SettingsPageExploreFeed();
+    final HomePage homePage = new HomePage();
+    final HomePageBottomTab homePageBottomTab = new HomePageBottomTab();
 
     @Test
     @Story("Explore Feed")
@@ -222,7 +221,7 @@ public class SettingsTest extends TestBase {
             homePage.checkSelectedThemeColor(theme);
         });
     }
-    
+
     @Test
     @Story("App Theme")
     @DisplayName("The 'App Theme' options: check the 'Match system theme' toggle")

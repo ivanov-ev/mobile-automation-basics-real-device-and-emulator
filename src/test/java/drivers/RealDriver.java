@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import static io.appium.java_client.remote.AutomationName.ANDROID_UIAUTOMATOR2;
@@ -22,7 +24,7 @@ import static io.appium.java_client.remote.MobilePlatform.ANDROID;
 
 public class RealDriver implements WebDriverProvider {
 
-    RealConfig realConfig = ConfigFactory.create(RealConfig.class, System.getProperties());
+    final RealConfig realConfig = ConfigFactory.create(RealConfig.class, System.getProperties());
 
     @Nonnull
     @Override
@@ -42,8 +44,8 @@ public class RealDriver implements WebDriverProvider {
 
     public static URL getAppiumServerUrl() {
         try {
-            return new URL("http://localhost:4723/wd/hub");
-        } catch (MalformedURLException e) {
+            return new URI("http://localhost:4723/wd/hub").toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -56,9 +58,9 @@ public class RealDriver implements WebDriverProvider {
 
         File app = new File(appPath);
         if (!app.exists()) {
-            try (InputStream in = new URL(appUrl).openStream()) {
+            try (InputStream in = new URI(appUrl).toURL().openStream()) {
                 FileUtils.copyInputStreamToFile(in, app);
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 throw new AssertionError("Failed to download the application");
             }
         }

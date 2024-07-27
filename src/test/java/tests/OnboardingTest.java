@@ -14,8 +14,8 @@ import static io.qameta.allure.Allure.step;
 @Feature("Onboarding")
 @DisplayName("Tests for the Wikipedia application's onboarding steps")
 public class OnboardingTest extends TestBase {
-    OnboardingPage onboardingPage = new OnboardingPage();
-    HomePage homePage = new HomePage();
+    final OnboardingPage onboardingPage = new OnboardingPage();
+    final HomePage homePage = new HomePage();
 
     @Test
     @Story("Follow onboarding steps")

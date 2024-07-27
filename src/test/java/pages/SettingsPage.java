@@ -43,7 +43,7 @@ public class SettingsPage {
     @Step("Switch the 'Show Images' toggle")
     public SettingsPage switchShowImagesToggle(boolean targetState) {
         boolean currentState = Boolean.parseBoolean(showImagesToggle.getAttribute("checked"));
-        if(currentState != targetState) showImagesToggle.click();
+        if (currentState != targetState) showImagesToggle.click();
         return this;
     }
 

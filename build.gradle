@@ -16,7 +16,8 @@ def selenideVersion = "7.3.1",
     aspectjWeaverVersion = "1.9.22",
     appiumJavaClientVersion = "9.2.2",
     ownerVersion = "1.0.12",
-    commonIoVersion = "2.11.0"
+    commonIoVersion = "2.11.0",
+    commonCodecVersion = '1.17.1'
 
 allure {
     report {
@@ -38,13 +39,18 @@ dependencies {
             "com.codeborne:selenide-appium:$selenideAppiumVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
             "io.appium:java-client:$appiumJavaClientVersion",
-            "io.rest-assured:rest-assured:$restAssuredVersion",
             "org.junit.jupiter:junit-jupiter:$junitVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
             "org.aspectj:aspectjweaver:$aspectjWeaverVersion",
             "org.aeonbits.owner:owner:$ownerVersion",
-            "commons-io:commons-io:$commonIoVersion"
+            "commons-io:commons-io:$commonIoVersion",
+            "commons-codec:commons-codec:$commonCodecVersion"
     )
+}
+dependencies {
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion") {
+        exclude group: 'commons-codec', module: 'commons-codec'
+    }
 }
 
 tasks.withType(Test) {

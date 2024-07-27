@@ -11,7 +11,7 @@ import static io.appium.java_client.AppiumBy.id;
 public class OnboardingPage {
     private final SelenideElement primaryTextView = $(id("org.wikipedia.alpha:id/primaryTextView")),
             secondaryTextView = $(id("org.wikipedia.alpha:id/secondaryTextView")),
-            addLanguageButton =   $(id("org.wikipedia.alpha:id/addLanguageButton")),
+            addLanguageButton = $(id("org.wikipedia.alpha:id/addLanguageButton")),
             skipButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_skip_button")),
             forwardButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_forward_button")),
             doneButton = $(id("org.wikipedia.alpha:id/fragment_onboarding_done_button"));

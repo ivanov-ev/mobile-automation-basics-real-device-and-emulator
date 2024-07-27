@@ -4,12 +4,14 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.appium.SelenideAppium;
 import com.codeborne.selenide.appium.SelenideAppiumElement;
 import io.qameta.allure.Step;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -48,7 +50,7 @@ public class HomePage {
             todayOnWikipediaSectionAppium = SelenideAppium.
                     $(byAttribute("text", "Today on Wikipedia"));
     private final SelenideElement blankFeedLabel =
-                    $(xpath("//android.widget.TextView[@text=\"There's nothing on your Explore feed\"]")),
+            $(xpath("//android.widget.TextView[@text=\"There's nothing on your Explore feed\"]")),
             customizeButton =
                     $(xpath("//android.widget.Button[@resource-id=\"org.wikipedia.alpha:id/customize_button\"]"));
     private final SelenideElement gotItButton = $(id("org.wikipedia.alpha:id/view_announcement_action_negative"));
@@ -66,9 +68,9 @@ public class HomePage {
         return this;
     }
 
-    @Step("Fast-check that the 'Home Page' is blank")
-    public boolean fastCheckHomePageBlank() {
-        return blankFeedLabel.exists();
+    @Step("Fast-check that the 'Home Page' is not blank")
+    public boolean fastCheckHomePageIsNotBlank() {
+        return !blankFeedLabel.exists();
     }
 
     @Step("Check the 'Feature Article' section visibility on the home page. " +
@@ -76,7 +78,7 @@ public class HomePage {
     public HomePage checkFeatureArticleSectionVisibility(boolean visible) {
         if (visible) featureArticleSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     featureArticleSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -89,7 +91,7 @@ public class HomePage {
     public HomePage checkTopReadSectionVisibility(boolean visible) {
         if (visible) topReadSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     topReadSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -102,7 +104,7 @@ public class HomePage {
     public HomePage checkPictureOfTheDaySectionVisibility(boolean visible) {
         if (visible) pictureOfTheDaySectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     pictureOfTheDaySectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -116,7 +118,7 @@ public class HomePage {
     public HomePage checkBecauseYouReadSectionVisibility(boolean visible) {
         if (visible) becauseYouReadSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     becauseYouReadSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -129,7 +131,7 @@ public class HomePage {
     public HomePage checkInTheNewsSectionVisibility(boolean visible) {
         if (visible) inTheNewsSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     inTheNewsSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -142,7 +144,7 @@ public class HomePage {
     public HomePage checkOnThisDaySectionVisibility(boolean visible) {
         if (visible) onThisDaySectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     onThisDaySectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -155,7 +157,7 @@ public class HomePage {
     public HomePage checkRandomizerSectionVisibility(boolean visible) {
         if (visible) randomizerSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     randomizerSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -168,7 +170,7 @@ public class HomePage {
     public HomePage checkTodayOnWikipediaSectionVisibility(boolean visible) {
         if (visible) todayOnWikipediaSectionAppium.scroll(with(DOWN, 10));
         else {
-            if (!fastCheckHomePageBlank()) {
+            if (fastCheckHomePageIsNotBlank()) {
                 for (int i = 0; i < 10; i++)
                     todayOnWikipediaSectionAppium.scroll(with(DOWN, 1)).should(not(exist));
             }
@@ -197,11 +199,11 @@ public class HomePage {
     public void checkSelectedThemeColor(Theme theme) throws IOException {
         File file = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
         BufferedImage bufferedImage = ImageIO.read(file);
-        int pixelColor = bufferedImage.getRGB(245,75);
+        int pixelColor = bufferedImage.getRGB(245, 75);
         int red = (pixelColor & 0x00ff0000) >> 16;
         int green = (pixelColor & 0x0000ff00) >> 8;
         int blue = pixelColor & 0x000000ff;
-        switch(theme) {
+        switch (theme) {
             case LIGHT: {
                 Assertions.assertEquals(255, red);
                 Assertions.assertEquals(255, green);

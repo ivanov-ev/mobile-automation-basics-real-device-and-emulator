@@ -50,7 +50,7 @@ public class TestBase {
     @AfterEach
     void addAttachments() {
         Attach.screenshotAs("Last screenshot");
-        if(System.getProperty("deviceHost", "emulator").equals("browserstack")) {
+        if (System.getProperty("deviceHost", "emulator").equals("browserstack")) {
             String sessionId = Selenide.sessionId().toString();
             System.out.println("Capturing video from Browserstack. SessionId: " + sessionId);
             Attach.addVideo(sessionId);
